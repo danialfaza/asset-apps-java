@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package menu;
-import Form_Master.kategori;
+import Form_Master.*;
 
 /**
  *
@@ -27,15 +27,15 @@ public class menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnDepartemen = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Master Asset");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDepartemen.setText("Departemen");
+        btnDepartemen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDepartemenActionPerformed(evt);
             }
         });
 
@@ -51,18 +51,18 @@ public class menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jButton1)
-                .addGap(33, 33, 33)
+                .addGap(56, 56, 56)
+                .addComponent(btnDepartemen)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnDepartemen)
                     .addComponent(jButton2))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
@@ -70,9 +70,11 @@ public class menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnDepartemenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepartemenActionPerformed
+        departemen departemenFrame = new departemen();
+        departemenFrame.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_btnDepartemenActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         kategori kategoriFrame = new kategori();
@@ -117,7 +119,7 @@ public class menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDepartemen;
     private javax.swing.JButton jButton2;
     // End of variables declaration//GEN-END:variables
 }
