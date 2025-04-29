@@ -4,17 +4,68 @@
  */
 package Form_Master;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import koneksi.koneksi;
+
 /**
  *
  * @author danialfaza
  */
 public class departemen extends javax.swing.JFrame {
+    private Connection conn = new koneksi().connect();
+     private DefaultTableModel tabmode;
 
     /**
      * Creates new form departemen
      */
     public departemen() {
         initComponents();
+        aktif();
+        kosong();
+        datatable();
+    }
+    
+    protected void aktif(){
+        txtId.requestFocus();
+    }
+    
+    protected void kosong(){
+        txtId.setText("");
+        txtNama.setText("");
+        txtPic.setText("");
+        txtNoPic.setText("");
+    }
+    
+    protected void datatable(){
+        Object[] Baris ={"Kode Departemen","Nama Departemen","Nama PIC", "No PIC"};
+        tabmode = new DefaultTableModel(null, Baris);
+            
+        String cari = txtCari.getText();
+        try{
+                String sql = "SELECT * FROM departemen WHERE kode_dep LIKE '%"+cari+"%' or nama_dep LIKE '%"+cari+"%'";
+                Statement stat = conn.createStatement();
+                ResultSet hasil = stat.executeQuery(sql);
+                
+                while(hasil.next()){
+                    tabmode.addRow(new Object[]{
+                        hasil.getString(1),
+                        hasil.getString(2),
+                        hasil.getString(3),
+                        hasil.getString(4)
+                    });
+                }
+                tblDep.setModel(tabmode);
+   
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null,"data gagal diload "+ex);
+            }    
+            
     }
 
     /**
@@ -35,14 +86,14 @@ public class departemen extends javax.swing.JFrame {
         txtPic = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtNoPic = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
+        btnSimpan = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnBatal = new javax.swing.JButton();
+        txtCari = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDep = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -71,17 +122,22 @@ public class departemen extends javax.swing.JFrame {
 
         jLabel5.setText("No. Hp PIC");
 
-        jButton1.setText("Simpan");
+        btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Update");
+        btnUpdate.setText("Update");
 
-        jButton3.setText("Hapus");
+        btnHapus.setText("Hapus");
 
-        jButton4.setText("Batal");
+        btnBatal.setText("Batal");
 
         jButton5.setText("Cari");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDep.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -92,7 +148,7 @@ public class departemen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDep);
 
         jLabel6.setText("Status Departemen");
 
@@ -112,15 +168,15 @@ public class departemen extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnSimpan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnUpdate)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnHapus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
+                        .addComponent(btnBatal))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton5))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,13 +228,13 @@ public class departemen extends javax.swing.JFrame {
                     .addComponent(jRadioButton2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnSimpan)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnHapus)
+                    .addComponent(btnBatal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,6 +251,25 @@ public class departemen extends javax.swing.JFrame {
     private void txtPicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPicActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPicActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        String sql = "INSERT INTO departemen(kode_dep, nama_dep, nama_pic, no_pic) VALUES (?,?,?,?)";
+        try{
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, txtId.getText());
+            stat.setString(2, txtNama.getText());
+            stat.setString(3, txtPic.getText());
+            stat.setString(4, txtNoPic.getText());
+            
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "data berhasil disimpan");
+            kosong();
+            txtId.requestFocus();
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,"data gagal disimpan "+ex);
+        }
+        datatable();
+    }//GEN-LAST:event_btnSimpanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,10 +307,10 @@ public class departemen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnSimpan;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -246,8 +321,8 @@ public class departemen extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTable tblDep;
+    private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNama;
     private javax.swing.JTextField txtNoPic;

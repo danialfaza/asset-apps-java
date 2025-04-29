@@ -259,7 +259,7 @@ public class kategori extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-         String sql = "INSERT INTO kategori_asset(kode_kategori, nama_kategori, keterangan) VALUES (?,?,?)";
+        String sql = "INSERT INTO kategori_asset(kode_kategori, nama_kategori, keterangan) VALUES (?,?,?)";
         try{
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, txtId.getText());
