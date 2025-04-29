@@ -130,10 +130,25 @@ public class departemen extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Cari");
 
@@ -148,6 +163,11 @@ public class departemen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblDep.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDepMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDep);
 
         jLabel6.setText("Status Departemen");
@@ -270,6 +290,59 @@ public class departemen extends javax.swing.JFrame {
         }
         datatable();
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void tblDepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDepMouseClicked
+        int bar = tblDep.getSelectedRow();
+        String id = tabmode.getValueAt(bar, 0).toString();
+        String nama = tabmode.getValueAt(bar, 1).toString();
+        String pic = tabmode.getValueAt(bar, 2).toString();
+        String pic_no = tabmode.getValueAt(bar, 3).toString();
+        
+        txtId.setText(id);
+        txtNama.setText(nama);
+        txtPic.setText(pic);
+        txtNoPic.setText(pic_no);
+    }//GEN-LAST:event_tblDepMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        try{
+            String sql = "UPDATE departemen SET kode_dep=?, nama_dep=?, pic=?, pic_no=? WHERE kode_dep ='"+txtId.getText()+"'";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, txtId.getText());        
+            stat.setString(2, txtNama.getText());
+            stat.setString(3, txtPic.getText());
+            stat.setString(3, txtNoPic.getText());
+            
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "data berhasil diubah");
+            kosong();
+            txtId.requestFocus();
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,"data gagal diubah "+ex);
+        }
+        datatable();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        int ok = JOptionPane.showConfirmDialog(null, "Hapus","Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+        if(ok ==0){
+            String sql = "DELETE FROM departemen WHERE kode_dep ='"+txtId.getText()+"'";
+            try{
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "data berhasil dihapus");
+                kosong();
+                txtId.requestFocus();
+            }catch(SQLException ex){
+                 JOptionPane.showMessageDialog(null, "data gagal dihapus "+ex);
+            }
+            datatable();
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        kosong();
+    }//GEN-LAST:event_btnBatalActionPerformed
 
     /**
      * @param args the command line arguments

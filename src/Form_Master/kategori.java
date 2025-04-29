@@ -104,6 +104,11 @@ public class kategori extends javax.swing.JFrame {
         });
 
         jButton4.setText("Batal");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         tblKategori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -305,6 +310,10 @@ public class kategori extends javax.swing.JFrame {
             datatable();
         }
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       kosong();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
