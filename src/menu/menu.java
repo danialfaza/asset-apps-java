@@ -116,7 +116,7 @@ public class menu extends javax.swing.JFrame {
                 System.out.println("Hallo ");
                 new menu().setVisible(true);
                 
-                  System.out.println("Percobaan kanyaa ");
+                  System.out.println("Percobaan anti ribet ");
             }
         });
     }
