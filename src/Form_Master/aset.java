@@ -385,24 +385,24 @@ public class aset extends javax.swing.JFrame {
     }//GEN-LAST:event_btnKembaliActionPerformed
 
     private void loadKategori() {
-    try {
-        kategori.removeAllItems(); // bersihkan isian sebelumnya
-        kategori.addItem("Pilih Kategori"); // tambahkan nilai default
+        try {
+            kategori.removeAllItems(); // bersihkan isian sebelumnya
+            kategori.addItem("Pilih Kategori"); // tambahkan nilai default
 
-        String sql = "SELECT nama_kategori FROM kategori_asset";
-        Statement stat = conn.createStatement();
-        ResultSet hasil = stat.executeQuery(sql);
+            String sql = "SELECT nama_kategori FROM kategori_asset";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
 
-        while (hasil.next()) {
-            kategori.addItem(hasil.getString("nama_kategori"));
+            while (hasil.next()) {
+                kategori.addItem(hasil.getString("nama_kategori"));
+            }
+
+            hasil.close();
+            stat.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Data gagal diload: " + ex);
         }
-
-        hasil.close();
-        stat.close();
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Data gagal diload: " + ex);
     }
-}
    
     /**
      * @param args the command line arguments

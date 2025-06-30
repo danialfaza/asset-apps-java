@@ -36,17 +36,17 @@ public class kerusakan extends javax.swing.JFrame {
      protected void kosong(){
         nama.setText("");
         kode.setText("");
-        lokasi.setText("");
+        set_lokasi.setSelectedIndex(0);
         deskripsi.setText("");
         txtHiddenId.setText("");
     }
      
      protected void datatable(){
-        Object[] Baris ={"ID","Nama Pelapor","Kode Asset","Lokasi", "Deskripsi"};
+        Object[] Baris ={"ID","Nama Pelapor","Kode Asset","Nama Aset", "Lokasi", "Deskripsi"};
         tabmode = new DefaultTableModel(null, Baris);
             
         try{
-                String sql = "SELECT * FROM kerusakan_asset";
+                String sql = "SELECT k.id, k.nama_pelapor, k.kode_asset, a.nama, k.lokasi, k.deskripsi FROM kerusakan_asset as k JOIN data_asset as a ON k.kode_asset = a.kode_asset";
                 Statement stat = conn.createStatement();
                 ResultSet hasil = stat.executeQuery(sql);
                 
@@ -56,7 +56,8 @@ public class kerusakan extends javax.swing.JFrame {
                         hasil.getString(2),
                         hasil.getString(3),
                         hasil.getString(4),
-                        hasil.getString(5),
+                        hasil.getString(5), 
+                        hasil.getString(6), 
                     });
                 }
                 table.setModel(tabmode);
@@ -87,7 +88,6 @@ public class kerusakan extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         nama = new javax.swing.JTextField();
         kode = new javax.swing.JTextField();
-        lokasi = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
@@ -100,6 +100,7 @@ public class kerusakan extends javax.swing.JFrame {
         deskripsi = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        set_lokasi = new javax.swing.JComboBox<>();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,6 +116,11 @@ public class kerusakan extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Krungthep", 1, 18)); // NOI18N
         jLabel1.setText("Lapor Kerusakan Aset");
@@ -135,8 +141,18 @@ public class kerusakan extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
@@ -163,6 +179,11 @@ public class kerusakan extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(table);
 
         deskripsi.setColumns(20);
@@ -170,6 +191,8 @@ public class kerusakan extends javax.swing.JFrame {
         jScrollPane4.setViewportView(deskripsi);
 
         jButton1.setText("Cari");
+
+        set_lokasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,7 +221,7 @@ public class kerusakan extends javax.swing.JFrame {
                                     .addComponent(jScrollPane4)
                                     .addComponent(nama)
                                     .addComponent(kode)
-                                    .addComponent(lokasi)))
+                                    .addComponent(set_lokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnSimpan)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -236,10 +259,10 @@ public class kerusakan extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(kode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(lokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(set_lokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -262,7 +285,22 @@ public class kerusakan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:
+       String sql = "INSERT INTO kerusakan_asset(kode_asset, nama_pelapor, lokasi, deskripsi) VALUES (?,?,?,?)";
+        try{
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, kode.getText());
+            stat.setString(2, nama.getText());            
+            stat.setString(3, set_lokasi.getSelectedItem().toString());
+            stat.setString(4, deskripsi.getText());
+            
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "data berhasil disimpan");
+            kosong();
+            kode.requestFocus();
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,"data gagal disimpan "+ex);
+        }
+        datatable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
@@ -275,6 +313,86 @@ public class kerusakan extends javax.swing.JFrame {
        this.dispose(); 
     }//GEN-LAST:event_btnKembaliActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       loadDepartemen();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+       try{
+             if (set_lokasi.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Silakan pilih Departemen terlebih dahulu.");
+                return;
+            }
+            String sql = "UPDATE kerusakan_asset SET kode_asset=?, nama_pelapor=?, lokasi=?, deskripsi=? WHERE id=?";
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, kode.getText());        
+            stat.setString(2, nama.getText());
+            stat.setString(3, set_lokasi.getSelectedItem().toString());
+            stat.setString(4, deskripsi.getText());
+            stat.setString(5, txtHiddenId.getText());
+            
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "data berhasil diubah");
+            kosong();
+            kode.requestFocus();
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,"data gagal diubah "+ex);
+        }
+        datatable();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        int ok = JOptionPane.showConfirmDialog(null, "Hapus","Konfirmasi Dialog", JOptionPane.YES_NO_OPTION);
+        if(ok ==0){
+            String sql = "DELETE FROM kerusakan_asset WHERE id ='"+txtHiddenId.getText()+"'";
+            try{
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "data berhasil dihapus");
+                kosong();
+                kode.requestFocus();
+            }catch(SQLException ex){
+                 JOptionPane.showMessageDialog(null, "data gagal dihapus "+ex);
+            }
+            datatable();
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        int bar = table.getSelectedRow();
+        String id_ker = tabmode.getValueAt(bar, 0).toString();
+        String nm_pel = tabmode.getValueAt(bar, 1).toString();
+        String kd_a = tabmode.getValueAt(bar, 2).toString();
+        String lok = tabmode.getValueAt(bar, 4).toString();
+        String des = tabmode.getValueAt(bar, 5).toString();
+        
+        kode.setText(kd_a);
+        nama.setText(nm_pel);
+        deskripsi.setText(des);
+        set_lokasi.setSelectedItem(lok);
+        txtHiddenId.setText(id_ker);
+    }//GEN-LAST:event_tableMouseClicked
+
+    private void loadDepartemen() {
+        try {
+            set_lokasi.removeAllItems(); // bersihkan isian sebelumnya
+            set_lokasi.addItem("Pilih Departemen"); // tambahkan nilai default
+
+            String sql = "SELECT nama_dep FROM departemen";
+            Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+
+            while (hasil.next()) {
+                set_lokasi.addItem(hasil.getString("nama_dep"));
+            }
+
+            hasil.close();
+            stat.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Data gagal diload: " + ex);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -329,8 +447,8 @@ public class kerusakan extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField kode;
-    private javax.swing.JTextField lokasi;
     private javax.swing.JTextField nama;
+    private javax.swing.JComboBox<String> set_lokasi;
     private javax.swing.JTable table;
     private javax.swing.JTextField txtHiddenId;
     // End of variables declaration//GEN-END:variables
