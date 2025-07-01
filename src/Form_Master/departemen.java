@@ -356,12 +356,12 @@ public class departemen extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try{
-            String sql = "UPDATE departemen SET kode_dep=?, nama_dep=?, pic=?, pic_no=? WHERE kode_dep ='"+txtId.getText()+"'";
+            String sql = "UPDATE departemen SET kode_dep=?, nama_dep=?, nama_pic=?, no_pic=? WHERE kode_dep ='"+txtId.getText()+"'";
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, txtId.getText());        
             stat.setString(2, txtNama.getText());
             stat.setString(3, txtPic.getText());
-            stat.setString(3, txtNoPic.getText());
+            stat.setString(4, txtNoPic.getText());
             
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "data berhasil diubah");

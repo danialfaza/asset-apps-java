@@ -11,6 +11,10 @@ import menu.menu;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -140,6 +144,7 @@ public class perbaikan extends javax.swing.JFrame {
         tbl_perbaikan = new javax.swing.JTable();
         btnKembali = new javax.swing.JButton();
         txtHiddenId = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -252,6 +257,13 @@ public class perbaikan extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Cetak");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -302,8 +314,11 @@ public class perbaikan extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnKembali)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnKembali)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -361,7 +376,9 @@ public class perbaikan extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnKembali)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnKembali)
+                            .addComponent(jButton1))
                         .addGap(12, 12, 12)))
                 .addContainerGap())
         );
@@ -514,6 +531,18 @@ public class perbaikan extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      try{
+           String reportPath = "src/Form/perbaikan.jasper";
+           HashMap<String, Object> parameters = new HashMap<>();
+           JasperPrint print = JasperFillManager.fillReport(reportPath, parameters, conn);
+           JasperViewer.viewReport(print, false);
+            
+       }catch(Exception e){
+            e.printStackTrace();
+       }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -557,6 +586,7 @@ public class perbaikan extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdate;
     private javax.swing.JTextArea deskripsi;
     private javax.swing.JTextField id_aset;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

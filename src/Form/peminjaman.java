@@ -11,6 +11,9 @@ import menu.menu;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
+import java.util.HashMap;
 
 
 /**
@@ -106,6 +109,7 @@ public class peminjaman extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         tgl_pnjm = new com.toedter.calendar.JDateChooser();
         tgl_pgmbln = new com.toedter.calendar.JDateChooser();
+        btnCetak = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -199,6 +203,13 @@ public class peminjaman extends javax.swing.JFrame {
 
         jButton2.setText("Cari");
 
+        btnCetak.setText("Cetak");
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,7 +218,7 @@ public class peminjaman extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,7 +226,9 @@ public class peminjaman extends javax.swing.JFrame {
                                 .addComponent(jButton2))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnKembali)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCetak)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtHiddenId, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,7 +299,8 @@ public class peminjaman extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtHiddenId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnKembali))))
+                            .addComponent(btnKembali)
+                            .addComponent(btnCetak))))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -355,9 +369,9 @@ public class peminjaman extends javax.swing.JFrame {
         String id = tabmode.getValueAt(bar, 0).toString();
         String nm_pmnjm = tabmode.getValueAt(bar, 1).toString();
         String kd_ast = tabmode.getValueAt(bar, 2).toString();
-        String pinjam = tabmode.getValueAt(bar, 3).toString();
-        String pengembalian = tabmode.getValueAt(bar, 4).toString();
-        String ket= tabmode.getValueAt(bar, 5).toString();
+        String pinjam = tabmode.getValueAt(bar, 4).toString();
+        String pengembalian = tabmode.getValueAt(bar, 5).toString();
+        String ket= tabmode.getValueAt(bar, 6).toString();
         
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -440,6 +454,18 @@ public class peminjaman extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+       try{
+           String reportPath = "src/Form/report_peminjaman.jasper";
+           HashMap<String, Object> parameters = new HashMap<>();
+           JasperPrint print = JasperFillManager.fillReport(reportPath, parameters, conn);
+           JasperViewer.viewReport(print, false);
+            
+       }catch(Exception e){
+            e.printStackTrace();
+       }
+    }//GEN-LAST:event_btnCetakActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -477,6 +503,7 @@ public class peminjaman extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnCetak;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnKembali;
     private javax.swing.JButton btnSimpan;
